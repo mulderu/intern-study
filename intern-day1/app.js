@@ -29,7 +29,28 @@ app.get("/", (req, res) => {
   res.send("<h1>Helo Mulder 111222aaa</h1>");
 });
 app.get("/scully", (req, res) => {
-  res.send("<h1>Helo scully</h1>");
+  // res.send("<h1>Helo scully</h1>");
+  throw new Error("error1 !!!!!");
+});
+
+const dbHelper = require("./db_helper.js");
+
+app.get("/sql/insert/:name/:age", (req, res) => {
+  let vo = {
+    name: req.params["name"],
+    age: parseInt(req.params["age"])
+  };
+  dbHelper.insertData(vo, function(r) {
+    res.send(r);
+  });
+});
+app.get("/sql/delete/:name", (req, res) => {
+  let vo = {
+    name: req.params["name"]
+  };
+  dbHelper.deleteByName(vo.name, function(r) {
+    res.send(r);
+  });
 });
 
 const PORT = process.env.PORT || 3000;
